@@ -4,13 +4,35 @@ export default function handler(req, res) {
 
   const { number } = req.query;
 
-  if (number) {
-    const result = data.filter(
-      item => item.MOB_NUMBER == number
-    );
+  const info = {
+    owner: "@babamtcodee",
+    support: "@babamtcodee",
+    youtube: "https://youtube.com/@mtcode"
+  };
 
-    return res.status(200).json(result);
+  if (!number) {
+    return res.status(200).json({
+      status: false,
+      message: "Number required",
+      ...info
+    });
   }
 
-  res.status(200).json(data);
+  const result = data.filter(
+    item => item.MOB_NUMBER == number
+  );
+
+  if (result.length > 0) {
+    return res.status(200).json({
+      status: true,
+      result: result,
+      ...info
+    });
+  }
+
+  return res.status(200).json({
+    status: false,
+    message: "Data not found",
+    ...info
+  });
 }
